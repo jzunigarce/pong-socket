@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pong</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="jumbotron">
+      <h1 class="text-center">Iniciar sesion</h1>
+      <div class="row">
+        <div class="col-md-offset-4 col-md-4">
+          <form id="login">
+            <input type="text" id="playerName" class="form-control" name="" value="" placeholder="Nombre de usuario">
+            <br>
+            <button  type="submit" class="btn" name="button">Iniciar Sesión</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="game" class="hidden"></div>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/sketch.js"></script>
+  </body>
+</html>
