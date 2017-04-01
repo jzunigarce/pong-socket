@@ -5,42 +5,66 @@ const app = express()
 const bodyParser = require('body-parser')
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
-const port = process.env.PORT || 3000
+const port  = process.env.PORT || 3000
 const players = []
+const tableW = 820
+const tableH = 576
 
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 app.use(express.static('public'))
 
-app.post('/login', (req, res) => {
-  const playerName = req.body.playerName
-  if(players.length === 2)
-    res.status(200).send({code: -1})
-  else{
-    let exists = false
-    for (var i = 0; i < players.length; i++) {
-      console.log(`${players[i]} ${playerName}`)
-      if(players[i] === playerName)
-        exists = true
-    }
-
-    if(!exists){
+io.on('connection', (socket) => {
+  console.log('A user connection')
+  socket.on('join', (data) => {
+    const isValid = isValidPlayer(data)
+    if (isValid.code === 0) {
       const player = {
-        name: playerName,
-        order: players.length
+        name: data,
+        order: players.length,
+        point: 0
       }
       players.push(player)
-      res.status(200).send({code: 0, player: player})
+      isValid.order = player.order
+      isValid.w = tableW
+      isValid.h = tableH
+
+      if(players.length === 2){
+        const paddleW = 30
+        const paddleH = 80
+        for(let i = 0; i < 2; i++){
+          players[i].x = i === 0 ? 0 : tableW - paddleW
+          players[i].y = Math.floor(tableH / 2) - Math.floor(paddleH / 2)
+          players[i].w = paddleW
+          players[i].h = paddleH
+          players[i].c = i === 0 ? '#f00' : '#00f'
+        }
+      }
     }
-    else
-      res.status(200).send({code: -2})
-  }
+    socket.emit('join', isValid)
+    socket.on('ready', () => {
+      io.emit('game', {players: players})
+    })
+
+    socket.on('move', (data) => {
+      console.log('move')
+      socket.broadcast.emit('move', data)
+    })
+  })
 })
 
-io.on('connection', (socket) => {
-  console.log('Usuario conectado')
-})
+const isValidPlayer = function (playerName) {
+  if (players.length < 2){
+    let exists = false;
+    for (let i = 0; i < players.length; i++)
+      if (players[i].name === playerName)
+        exists = true
+    if (!exists) return {code: 0}
+    else return {code: -1}
+  } else
+    return {code: -2}
+}
 
 server.listen(port, () => {
-  console.log(`Listen port ${port}`)
+  console.log(`Estoy conectado al puerto ${port}`)
 })

@@ -1,7 +1,7 @@
 {
   "name": "pong",
   "version": "1.0.0",
-  "description": "Pong game with sockets",
+  "description": "This is a pong game",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"
@@ -11,7 +11,6 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
-    "jquery": "^3.2.1",
     "socket.io": "^1.7.3"
   },
   "devDependencies": {
